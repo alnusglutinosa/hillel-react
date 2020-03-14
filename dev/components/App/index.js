@@ -1,18 +1,11 @@
 import React from 'react';
+import Main from '../Main';
 
-import Title from '../Title'; 
-import Form from '../Form';
-import List from '../ TaskList';
 
 class App extends React.Component {
 	render() {
-		// cponst;
 		return (
-			<div className="box">
-	            <Title />
-	            <Form />
-	            <List />
-	        </div>
+			<Main />
 		)
 	}
 }

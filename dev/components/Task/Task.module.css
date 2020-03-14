@@ -1,0 +1,46 @@
+.item
+{
+    display: flex;
+    align-items: center;
+    font-size: 1.2em;
+    font-weight: 300;
+    line-height: 1.4;
+    padding: 12px 16px;
+    word-wrap: break-word;
+}
+
+.item:hover {
+    background-color: #f7e9a1;
+}
+
+.item:not(:last-child)
+{
+    border-bottom: 1px solid rgba(173, 159, 86, 0.14);
+}
+
+.itemWrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.btnWrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-width: 200px;
+}
+
+.text {
+    display: inline-flex;
+    flex-grow: 1;
+    flex-shrink: 1;
+    padding: 0 22px;
+    font-size: 18px;
+}
+
+.checkbox {
+    flex-grow: 0;
+    flex-shrink: 0;
+}

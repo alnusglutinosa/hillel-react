@@ -1,12 +1,13 @@
 import React from 'react';
 import Checkbox from '../Checkbox';
+import Button from '../Button';
 import classes from './Form.module.css';
 
 class Form extends React.Component {
 	render() {
 		return (
 			<form className={classes.form}>
-                <div className="form__checkbox">   
+                <div className={classes.checkbox}>   
                     <Checkbox />
                 </div>
  
@@ -15,7 +16,7 @@ class Form extends React.Component {
                     <textarea className={classes.textarea} name="text" id="text" />
                 </div>
                 
-                <button className="button">post</button>
+                <Button />
             </form>
 		);
 	}
