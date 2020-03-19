@@ -40,6 +40,11 @@
     font-size: 18px;
 }
 
+.textCheck { 
+    color: #7d7d7d;
+    text-decoration: line-through;
+}
+
 .checkbox {
     flex-grow: 0;
     flex-shrink: 0;

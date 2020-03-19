@@ -5,20 +5,22 @@ import classes from './Task.module.css';
 
 class Task extends React.Component {
 	render() {
+        const { isCheck, text } = this.props;
+
 		return (
 			<li className={classes.item}>
                 <header className={classes.itemWrap}>
                     <div className={classes.checkbox}>
-                        <Checkbox />
+                        <Checkbox isCheck={isCheck}/>
                     </div>
 
-                    <p className={classes.text}>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. 
+                    <p className={`${classes.text} ${isCheck ? classes.textCheck : ''} `}>
+                        {text}
                     </p>
                     
                     <div className={classes.btnWrap}>
-                        <Button />
-                        <Button />
+                        <Button text={'Edit'}/>
+                        <Button text={'Delete'}/>
                     </div>
                 </header>
             </li>

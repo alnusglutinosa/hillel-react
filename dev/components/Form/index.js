@@ -16,7 +16,7 @@ class Form extends React.Component {
                     <textarea className={classes.textarea} name="text" id="text" />
                 </div>
                 
-                <Button />
+                <Button text={'Add'} />
             </form>
 		);
 	}
