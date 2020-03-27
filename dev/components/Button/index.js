@@ -1,12 +1,12 @@
 import React from 'react';
 import classes from './Button.module.css';
 
-class Button extends React.Component {
+class Button extends React.PureComponent {
 	render() {
-		const { text } = this.props;
+		const { text, onClick } = this.props;
 
 		return (
-			<button className={classes.btn}>
+			<button onClick={onClick} className={classes.btn}>
 				<span className={classes.text}>{text}</span>
 			</button>
 		)
