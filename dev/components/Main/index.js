@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect }from 'react';
 import Title from '../Title'; 
 import Form from '../Form';
 import List from '../ TaskList';
@@ -42,65 +42,47 @@ const TASKS = [
 	}
 ];
 
-class Main extends React.Component {
-    state = {
-		tasksList: [], 
-    }
 
-    componentDidMount() {
+const Main = () => {
+	const init = () => {
         if (localStorage.getItem('tasksObject') !== null) {
             let tasksObject = localStorage.getItem('tasksObject');
-            this.setState({
-                tasksList: JSON.parse(tasksObject),
-            });
+			return JSON.parse(tasksObject);
         } else {
             localStorage.setItem('tasksObject', JSON.stringify(TASKS));
-            this.setState({
-                tasksList: TASKS,
-            });
+			return TASKS;
         }
     }
 
-    componentDidUpdate() {
-        const { tasksList } = this.state;
-        localStorage.setItem('tasksObject', JSON.stringify(tasksList));
-    }
+	const [tasksList, changeTasks] = useState(init);
 
-    addTask = (newTask ) => {
-		const { tasksList } = this.state;
-		this.setState({
-			tasksList: [newTask, ...tasksList],
-		});
-	}
+	useEffect(() => {
+		localStorage.setItem('tasksObject', JSON.stringify(tasksList));
+	}, [tasksList]);
 
-	deleteTask = (taskId) => {
-        const { tasksList } = this.state;
-		this.setState({
-			tasksList: tasksList.filter(item => item.id !== taskId),
-		});
-	}
+	const addTask = (newTask) => {
+		changeTasks([newTask, ...tasksList]);
+	};
 
-	appUpdateTask = (task) => {
-		const { tasksList } = this.state;
-		this.setState({
-			tasksList: tasksList.map(item => item.id === task.id ? task : item),
-		})
-	}
-    
-	render() {
-        const { tasksList } = this.state;
-		return (
-            <main className={classes.main}>
-                <Title />
-                <Form submitForm={this.addTask} />
-                <List 
-                    listUpdateTask={this.appUpdateTask}
-                    tasks={tasksList}
-                    removeTask={this.deleteTask}
-                />
-            </main>
-        );
-	}
+	const deleteTask = (taskId) => {
+		changeTasks(tasksList.filter(item => item.id !== taskId));
+	};
+
+	const appUpdateTask = (task) => {
+		changeTasks(tasksList.map(item => item.id === task.id ? task : item));
+	};
+
+	return (
+		<main className={classes.main}>
+			<Title />
+			<Form submitForm={addTask} />
+			<List 
+				listUpdateTask={appUpdateTask}
+				tasks={tasksList}
+				removeTask={deleteTask}
+			/>
+		</main>
+	);
 }
 
 export default Main;

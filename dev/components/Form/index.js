@@ -1,76 +1,72 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Checkbox from '../Checkbox';
 import Button from '../Button';
 import classes from './Form.module.css';
 
-class Form extends React.Component {
-    state = {
-        isCheck: this.props.item?.isCheck || false,
-        text: this.props.item?.text || '',
-    }
 
-    handleChange = (e) => {
+const Form = ({ item, submitForm }) => {
+    const [isCheck, changeCheck] = useState(item?.isCheck || false);
+    const [text, changeText] = useState(item?.text || '');
+
+    const handleChange = (e) => {
         const input = e.target;
         const value = input.type === 'checkbox' ? input.checked : input.value;
-     
-        this.setState({ [input.name]: value });
+
+        if (input.name === 'text') {
+            changeText(value);
+        } else {
+            changeCheck(value);
+        }
     }
 
-    handleSubmit = (e) => {
+    const clearForm = () => {
+        changeCheck(false);
+        changeText('');
+    }
+
+    const handleSubmit = (e) => {
         e.preventDefault();
-        const { isCheck, text } = this.state;
 
         if (!text) {
             return;
         }
 
         const newComment = {
-            id: this.props.item?.id || Date.now(),
+            id: item?.id || Date.now(),
             isCheck,
             text,
         };
 
-        this.props.submitForm(newComment);
-        this.clearForm();
+        submitForm(newComment);
+        clearForm();
     }
 
-    clearForm = () => {
-        this.setState({
-            isCheck: false,
-            text: '',
-        });
-    }
-    
-	render() {
-        const { isCheck, text } = this.state;
+    return (
+        <form onSubmit={handleSubmit} className={classes.form}>
+            <div className={classes.checkbox}>   
+                <Checkbox 
+                    name={"isCheck"}
+                    isCheck={isCheck}
+                    onChange={handleChange}
+                />
+            </div>
 
-		return (
-			<form onSubmit={this.handleSubmit} className={classes.form}>
-                <div className={classes.checkbox}>   
-                    <Checkbox 
-                        name={"isCheck"}
-                        isCheck={isCheck}
-                        onChange={this.handleChange}
-                    />
-                </div>
- 
-                <div className="form-group">       
-                    <label className={classes.label} htmlFor="text">Tasks text</label>
-                
-                    <textarea
-                        className={classes.textarea}
-                        name="text"
-                        id="text"
-                        onChange={this.handleChange}
-                        value={text}
-                    />
+            <div className="form-group">       
+                <label className={classes.label} htmlFor="text">Tasks text</label>
+            
+                <textarea
+                    className={classes.textarea}
+                    name="text"
+                    id="text"
+                    onChange={handleChange}
+                    value={text}
+                />
 
-                </div>
-                
-                <Button text={'Post'} />
-            </form>
-		);
-	}
+            </div>
+            
+            <Button text={'Post'} />
+        </form>
+    );
 }
 
 export default Form;
