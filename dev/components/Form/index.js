@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Checkbox from '../Checkbox';
 import Button from '../Button';
 import classes from './Form.module.css';
+import picture from './bg2.jpg';
 
 
 const Form = ({ item, submitForm }) => {
@@ -43,6 +44,9 @@ const Form = ({ item, submitForm }) => {
 
     return (
         <form onSubmit={handleSubmit} className={classes.form}>
+            
+            <img className={classes.bgImg} src={picture} alt="Scarlett" />
+
             <div className={classes.checkbox}>   
                 <Checkbox 
                     name={"isCheck"}

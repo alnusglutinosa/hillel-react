@@ -3,6 +3,7 @@ import Button from '../Button';
 import Checkbox from '../Checkbox';
 import Form from '../Form';
 import classes from './Task.module.css';
+import Icon from '../Icon';
 
 
 const Task = ({ isCheck, text, remove, id, itemUpdateTask}) => {
@@ -41,12 +42,16 @@ const Task = ({ isCheck, text, remove, id, itemUpdateTask}) => {
                             <Button 
                                 onClick={handleChange}
                                 text={'Edit'}
-                            />
+                            >
+                                <Icon name="edit" />
+                            </Button>
 
                             <Button 
                                 onClick={() => remove(id)}
                                 text={'Delete'}
-                            />
+                            >
+                                <Icon name="delete" />
+                            </Button>
 
                             </div>
                         </header>

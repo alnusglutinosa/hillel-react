@@ -1,0 +1,16 @@
+.title
+{
+    margin: 0;
+    padding: 40px;
+
+    text-align: center;
+
+    border-bottom: 3px solid;
+    background-color: #10689a;
+}
+
+.img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+}

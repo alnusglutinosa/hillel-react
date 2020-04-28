@@ -1,6 +1,9 @@
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const autoprefixer = require('autoprefixer'); 
+const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
+const WebpackMd5Hash = require('webpack-md5-hash');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
 const env = process.env.NODE_ENV || 'development';
 const isDev = env === 'development';
 
@@ -8,7 +11,7 @@ module.exports = {
 	entry: './dev/index.js',
 	output: {
 		path: path.resolve(__dirname, 'site'),
-		filename: 'bundle.js'
+		filename: 'bundle.[chunkhash].js'
 	},
 	devtool: isDev && 'eval-source-map',
 	mode: env,
@@ -30,43 +33,72 @@ module.exports = {
 					}
 				}
 			},
-			
 			{
-				test: /\.css$/, 
+				test: /\.svg$/,
 				use: [
-					require.resolve('style-loader'),
-					{
-						loader: require.resolve('css-loader'),
-						options: {
-							modules: true,
-							localIdentName: "[name]__[local]___[hash:base64:5]",
-							sourceMap: true
-						},
-					},
-					{
-						loader: require.resolve('postcss-loader'),
-						options: {
-							ident: 'postcss',
-							plugins: () => [
-								require('postcss-flexbugs-fixes'),
-								autoprefixer({
-									browsers: [
-										'>1%',
-										'last 4 versions',
-										'Firefox ESR',
-										'not ie < 9', // React doesn't support IE8 anyway
-									],
-									flexbox: 'no-2009',
-								}),
-								require('postcss-modules-values'),
-							],
-						},
-					},
-				],
+					'babel-loader',
+					'svg-react-loader'
+				]
 			},
+			{
+				test: /\.(png|jpg|jpeg|gif|webp|svg)$/,
+				exclude: /icons/,
+				use: {
+					loader: 'file-loader',
+					options: {
+						name: isDev ? '[name]-[hash].[ext]' : 'images/[hash].[ext]'
+					}
+				}
+			},
+			{
+				test: /\.css$/,
+				use: [
+					MiniCSSExtractPlugin.loader,
+					{
+						loader: 'css-loader',
+						options: {
+							modules: {
+								localIdentName: isDev ? '[local]-[hash:base64:5]' : '[hash:base64:5]'
+							}
+						}
+					}
+				]
+			},
+			{
+				test: /\.scss$/,
+				use: [
+					MiniCSSExtractPlugin.loader,
+					{
+						loader: 'css-loader',
+						options: {
+							modules: {
+								localIdentName: isDev ? '[local]-[hash:base64:5]' : '[hash:base64:5]'
+							}
+						}
+					},
+					{
+      					loader: 'postcss-loader',
+      					options: {
+        					plugins: [
+          						require('autoprefixer')(),
+        					]
+      					}
+    				},
+					'sass-loader'
+				]
+			}
 		]
 	},
 	plugins: [
+		new WebpackMd5Hash(),
+		new MiniCSSExtractPlugin({
+			filename: 'style.[chunkhash].css'
+		}),
+		new HtmlWebpackPlugin({
+			template: './dev/template/index.html',
+			filename: 'index.html',
+			// inject: false
+		}),
 		new CopyWebpackPlugin([
 			{
 				from: path.resolve('./dev/static'),
