@@ -1,22 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '../Button';
 import Checkbox from '../Checkbox';
 import Form from '../Form';
 import classes from './Task.module.css';
 import Icon from '../Icon';
+import { removeTask} from '../../actions';
 
 
-const Task = ({ isCheck, text, remove, id, itemUpdateTask}) => {
-    const [isShowForm, changeIsShowForm] = useState(false);
+const Task = ({ isCheck, text, id }) => {
+    const [isShowForm, changeShowForm] = useState(false);
 
-    const handleChange = () => {
-        changeIsShowForm(!isShowForm);
-    }
-    
-    const updateComment = (comm) => {
-        itemUpdateTask(comm);
-        handleChange();
-    }
+    useEffect(() => {
+        changeShowForm(false); 
+     }, [isCheck, text, id]);
 
     return (
         <>
@@ -24,7 +20,6 @@ const Task = ({ isCheck, text, remove, id, itemUpdateTask}) => {
                 isShowForm ? (
                     <Form
                         item={{ isCheck, text, id }}
-                        submitForm={updateComment}
                     />
                 ) : (
                     <li className={classes.item}>
@@ -40,14 +35,14 @@ const Task = ({ isCheck, text, remove, id, itemUpdateTask}) => {
                             <div className={classes.btnWrap}>
 
                             <Button 
-                                onClick={handleChange}
+                                onClick={() => changeShowForm(!isShowForm)}
                                 text={'Edit'}
                             >
                                 <Icon name="edit" />
                             </Button>
 
                             <Button 
-                                onClick={() => remove(id)}
+                                onClick={() => removeTask(id)}
                                 text={'Delete'}
                             >
                                 <Icon name="delete" />

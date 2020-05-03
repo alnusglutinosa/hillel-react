@@ -1,10 +1,23 @@
-import React, { useState }  from 'react';
+import React, { useState, useEffect }  from 'react';
 
 import Task from '../Task';
 import classes from './TaskList.module.css';
+import store from '../../store';
 
 
-const TaskList = ({ removeTask, listUpdateTask, tasks }) => {
+const TaskList = () => {
+	const [tasks, changeTasks] = useState(store.getStore());
+    const callbackForEmit = () => changeTasks(store.getStore());
+
+    useEffect(() => {
+        store.addEventListener(callbackForEmit);
+
+        return () => {
+            store.removeEventListener(callbackForEmit);
+        };
+	}, []);
+	
+
 	const [countTasks, changecountTasks] = useState(2);
 
 	const handleaddMoreTasks = (e) => {
@@ -23,8 +36,6 @@ const TaskList = ({ removeTask, listUpdateTask, tasks }) => {
 								isCheck={isCheck} 
 								text={text}
 								id={id}  
-								remove={removeTask}
-								itemUpdateTask={listUpdateTask}
 							/>
 						) : (null)
 					))

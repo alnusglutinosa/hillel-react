@@ -3,9 +3,11 @@ import Checkbox from '../Checkbox';
 import Button from '../Button';
 import classes from './Form.module.css';
 import picture from './bg2.jpg';
+import { updateTask, addTask } from '../../actions';
 
 
 const Form = ({ item, submitForm }) => {
+
     const [isCheck, changeCheck] = useState(item?.isCheck || false);
     const [text, changeText] = useState(item?.text || '');
 
@@ -32,13 +34,18 @@ const Form = ({ item, submitForm }) => {
             return;
         }
 
-        const newComment = {
+        const newTask = {
             id: item?.id || Date.now(),
             isCheck,
             text,
         };
 
-        submitForm(newComment);
+        if (item) {
+            updateTask(newTask);
+        } else {
+            addTask(newTask);
+        }
+
         clearForm();
     }
 
